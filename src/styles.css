@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+.loginBtn{
+    background-color: #DA0000;
+    padding: 10px 30px 10px 30px;
+    border: none;
+    color:azure;
+    font-size: 1.2em;
+}
+
+.text-red{
+    color: #da0000;
+}
+
+.active-nav-link{
+    color: #da0000 !important;
+}
+
+.opacity-50{
+    opacity: 0.5;
+}
+
+.bg-red{
+    background-color: #DA0000;
+}
+
+.bg-green{
+    background-color: green;
+}
+
+.bg-blue{
+    background-color: lightskyblue;
+}
+
+.alert{
+    color:white;
+}
+
+.browse-link{
+    background-color: #DA0000;
+    padding: 20px 50px 20px 50px;
+    border: none;
+    color:lightcyan;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+.browse-link:hover{
+    background-color: darkred;
+    padding: 25px 55px 25px 55px;
+    border: none;
+    color:white;
+    font-size: 1.2em;
+    text-decoration: none;
+}

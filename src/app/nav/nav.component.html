@@ -1,0 +1,33 @@
+<!-- Navigation Start  -->
+<nav class="navbar navbar-default navbar-sticky bootsnav">
+
+    <div class="container">
+        <!-- Start Header Navigation -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" routerLink="/"><img src="../assets/img/logo.png" class="logo" alt=""></a>
+        </div>
+        <!-- End Header Navigation -->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                <li><a routerLink="/" routerLinkActive="active-nav-link"
+                     [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+                <ng-container *ngIf="!(auth.isAuthenticated$ | async); else authLinks">
+                    <li><a routerLink="login" routerLinkActive="active-nav-link"
+                         [routerLinkActiveOptions]="{exact: true}">Login</a></li>
+                    <li><a routerLink="register" routerLinkActive="active-nav-link"
+                         [routerLinkActiveOptions]="{exact: true}">Register</a></li>
+                </ng-container>
+                <ng-template #authLinks>
+                    <li><a href="#">Companies</a></li>
+                    <li><a href="#" (click)="auth.logout($event)">Logout</a></li>
+                </ng-template>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div>
+</nav>
+<!-- Navigation End  -->

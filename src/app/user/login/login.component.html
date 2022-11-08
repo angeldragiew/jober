@@ -1,0 +1,21 @@
+	<!-- login section start -->
+    <section class="login-wrapper">
+        <div class="container">
+            <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
+                <form [formGroup]="loginForm" (ngSubmit)="login()">
+                    <img class="img-responsive" alt="logo" src="../../../assets/img/logo.png">
+                    <app-alert *ngIf="showAlert" [color]="alertColor">
+                        {{alertMsg}}
+                    </app-alert>
+                    <app-input [control]="email" type="text" placeholder="Enter email.."></app-input>
+                    <app-input [control]="password" type="password" placeholder="Enter password.."></app-input>
+                    <button [disabled]="loginForm.invalid || inSubmission" [ngClass]="{
+                        'opacity-50': loginForm.invalid || inSubmission
+                    }" type="submit" class="loginBtn">Login</button>
+                    <p>Have't Any Account <a routerLink="/register">Create An Account</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- login section End -->	
+    

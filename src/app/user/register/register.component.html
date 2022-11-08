@@ -1,0 +1,27 @@
+<section class="login-wrapper">
+    <div class="container">
+        <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
+            <form [formGroup]="registerForm" (ngSubmit)="register()">
+                <img class="img-responsive" alt="logo" src="../../../assets/img/logo.png">
+                <app-alert *ngIf="showAlert" [color]="alertColor">
+                    {{alertMsg}}
+                </app-alert>
+                <app-input [control]="name" placeholder="Enter name"></app-input>
+                <app-input [control]="email" placeholder="Enter email"></app-input>
+                <app-input [control]="password" type="password" placeholder="Enter password"></app-input>
+                <app-input [control]="confirm_password" type="password" placeholder="Confirm password"></app-input>
+                <label>
+                    <input type="radio" value="worker" [formControl]="accountType">
+                    <span>Worker</span>
+                </label>
+                <label>
+                    <input type="radio" value="organization" [formControl]="accountType">
+                    <span>Organization</span>
+                </label>
+                <button [disabled]="registerForm.invalid || inSubmission" [ngClass]="{
+                    'opacity-50': registerForm.invalid || inSubmission
+                }" type="submit" class="loginBtn">Register</button>
+            </form>
+        </div>
+    </div>
+</section>
