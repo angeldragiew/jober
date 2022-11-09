@@ -1,20 +1,19 @@
-<div class="company-list">
+<div class="company-list col-md-5">
     <div class="row center">
         <!-- <div class="col-md-2 col-sm-2">
             <div class="company-logo">
                 <img src="img/google.png" class="img-responsive" alt="" />
             </div>
         </div> -->
-        <div class="col-md-12 col-sm-12">
+        <div class="col-md-8 col-sm-8">
             <div class="company-content">
                 <h3>{{ title }}</h3>
-                <p>
-                    <span class="company-name"><b>Category:</b> {{ category }}</span>
-                    <span class="company-location"><b>Job Type:</b> {{ type }}</span>
+                <p class="company-name"><b>Category:</b> {{ category }}</p>
+                <p class="company-location"><b>Job Type:</b> {{ type }}</p>
             </div>
         </div>
-        <div class="col-md-12 col-sm-12">
-            <a type="submit" class="btn view-job" name="View Job">View Job</a>
+        <div class="col-md-4 col-sm-4">
+            <a [routerLink]="link" class="btn view-job" name="View Job">View Job</a>
         </div>
     </div>
 </div>

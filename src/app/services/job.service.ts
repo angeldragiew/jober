@@ -20,10 +20,21 @@ export class JobService {
     return this.jobsCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as IJob;
-        const id = a.payload.doc.id;
-        console.log(data) 
-        return { docId: id, ...data };
+        const docId = a.payload.doc.id;
+        return { docId, ...data };
       }))
     );
+  }
+
+  getJob(id: string) {
+    return this.jobsCollection.doc(id).snapshotChanges()
+      .pipe(
+        map(changes => {
+          const data = changes.payload.data() as IJob;
+          const docId = changes.payload.id;
+
+          return { docId, ...data }
+        })
+      )
   }
 }
