@@ -1,0 +1,21 @@
+<!-- Inner Banner -->
+<section class="inner-banner" style="backend:#242c36 url(https://via.placeholder.com/1920x600)no-repeat;">
+    <div class="container">
+        <div class="caption">
+            <h2>Get your jobs</h2>
+            <p>Get your Popular jobs <span>202 New job</span></p>
+        </div>
+    </div>
+</section>
+
+<section class="jobs">
+    <div class="container">
+        <div class="row heading">
+            <h2>Search Your Job</h2>
+            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p> -->
+        </div>
+        <div class="companies">
+            <app-job *ngFor="let job of jobs" link="ConcreteJob/{{job.docId}}" [category]="job.category" [type]="job.type" [title]="job.title"></app-job>
+        </div>
+    </div>
+</section>

@@ -15,15 +15,18 @@
         <div class="collapse navbar-collapse" id="navbar-menu">
             <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                 <li><a routerLink="/" routerLinkActive="active-nav-link"
-                     [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+                        [routerLinkActiveOptions]="{exact: true}">Home</a></li>
                 <ng-container *ngIf="!(auth.isAuthenticated$ | async); else authLinks">
                     <li><a routerLink="login" routerLinkActive="active-nav-link"
-                         [routerLinkActiveOptions]="{exact: true}">Login</a></li>
+                            [routerLinkActiveOptions]="{exact: true}">Login</a></li>
                     <li><a routerLink="register" routerLinkActive="active-nav-link"
-                         [routerLinkActiveOptions]="{exact: true}">Register</a></li>
+                            [routerLinkActiveOptions]="{exact: true}">Register</a></li>
                 </ng-container>
                 <ng-template #authLinks>
-                    <li><a href="#">Companies</a></li>
+                    <li><a routerLink="/BrowseJobs" routerLinkActive="active-nav-link"
+                            [routerLinkActiveOptions]="{exact: true}">Companies</a></li>
+                    <li><a routerLink="/Create/Job" routerLinkActive="active-nav-link"
+                            [routerLinkActiveOptions]="{exact: true}">Create Job</a></li>
                     <li><a href="#" (click)="auth.logout($event)">Logout</a></li>
                 </ng-template>
             </ul>

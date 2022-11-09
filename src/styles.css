@@ -1,53 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
-.loginBtn{
+.loginBtn {
     background-color: #DA0000;
     padding: 10px 30px 10px 30px;
     border: none;
-    color:azure;
+    color: azure;
     font-size: 1.2em;
 }
 
-.text-red{
+.text-red {
     color: #da0000;
 }
 
-.active-nav-link{
+.active-nav-link {
     color: #da0000 !important;
 }
 
-.opacity-50{
+.opacity-50 {
     opacity: 0.5;
 }
 
-.bg-red{
+.bg-red {
     background-color: #DA0000;
 }
 
-.bg-green{
+.bg-green {
     background-color: green;
 }
 
-.bg-blue{
+.bg-blue {
     background-color: lightskyblue;
 }
 
-.alert{
-    color:white;
+.alert {
+    color: white;
 }
 
-.browse-link{
+.browse-link {
     background-color: #DA0000;
     padding: 20px 50px 20px 50px;
     border: none;
-    color:lightcyan;
+    color: lightcyan;
     font-size: 1.2em;
     text-decoration: none;
 }
-.browse-link:hover{
+
+.browse-link:hover {
     background-color: darkred;
     padding: 25px 55px 25px 55px;
     border: none;
-    color:white;
+    color: white;
     font-size: 1.2em;
     text-decoration: none;
+}
+
+.radio-buttons>* {
+    float: left;
+    margin-right: 15px;
+}
+
+
+.center {
+    text-align: center;
+}
+
+.align-center {
+    vertical-align: middle;
 }
