@@ -36,7 +36,7 @@
                     <ng-container *ngIf="(auth.isAuthenticated$ | async)">
                         <div *ngIf="auth.isOrganization$ | async; else worker" class="col-md-2 col-sm-2 job-details-buttons">
                             <a routerLink="/EditJob/{{jobId}}" class="loginBtn">Edit</a>
-                            <a routerLink="/JobDetails/{{jobId}}" class="loginBtn">Delete</a>
+                            <a href="#" (click)="deleteJob($event, jobId)" class="loginBtn">Delete</a>
                         </div>
                         <ng-template #worker>
                             <div class="col-md-2 col-sm-2 job-details-buttons">

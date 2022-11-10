@@ -44,4 +44,8 @@ export class JobService {
       ...data
     })
   }
+
+  deleteJob(id: string) {
+    this.jobsCollection.doc(id).delete()
+  }
 }
