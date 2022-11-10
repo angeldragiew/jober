@@ -74,3 +74,20 @@
 .companies>*{
     margin: 0 auto;
 }
+
+.job-details-buttons{
+    text-align: center;
+}
+
+.job-details-buttons a{
+    display: block;
+    margin-bottom:4px;
+    color: white;
+    text-decoration: none;
+}
+.job-details-buttons a:hover{
+    display: block;
+    margin-bottom:4px;
+    color: white;
+    text-decoration: none;
+}

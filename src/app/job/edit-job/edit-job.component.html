@@ -1,0 +1,45 @@
+<section class="login-wrapper">
+    <div class="container">
+        <div class="col-md-6 col-sm-8 col-md-offset-3 col-sm-offset-2">
+            <form [formGroup]="editJobForm" (ngSubmit)="updateJob()">
+                <img class="img-responsive" alt="logo" src="../../../assets/img/logo.png">
+                <app-alert *ngIf="showAlert" [color]="alertColor">
+                    {{alertMsg}}
+                </app-alert>
+                <app-input [control]="title" placeholder="Enter Job Title"></app-input>
+
+                <textarea [formControl]="description" placeholder="Enter Job Description"
+                    class="form-control input-lg"></textarea>
+                <ng-container *ngIf="description.touched && description.dirty">
+                    <p *ngIf="description.errors?.['required']" class="text-red">
+                        Field is required!
+                    </p>
+                    <p *ngIf="description.errors?.['minlength']" class="text-red">
+                        The value you inputted is {{description.errors?.['minlength'].actualLength}} characters long.
+                        It must be at least {{description.errors?.['minlength'].requiredLength}} characters long.
+                    </p>
+                </ng-container>
+
+                <div class="radio-buttons">
+                    <label>
+                        <input type="radio" value="full-time" [formControl]="type">
+                        <span>full-time</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="part-time" [formControl]="type">
+                        <span>part-time</span>
+                    </label>
+                    <label>
+                        <input type="radio" value="remote" [formControl]="type">
+                        <span>remote</span>
+                    </label>
+                </div>
+
+                <app-input [control]="category" placeholder="Enter Job Category"></app-input>
+                <button [disabled]="editJobForm.invalid || inSubmission" [ngClass]="{
+                    'opacity-50': editJobForm.invalid || inSubmission
+                }" type="submit" class="loginBtn">Create</button>
+            </form>
+        </div>
+    </div>
+</section>

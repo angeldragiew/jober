@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore';
 import IJob from '../models/job.model';
 import { map, first } from 'rxjs';
+import IEditJob from '../models/edit.job.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,11 @@ export class JobService {
           return { docId, ...data }
         })
       )
+  }
+
+  updateJob(id: string, data: IEditJob) {
+    return this.jobsCollection.doc(id).update({
+      ...data
+    })
   }
 }

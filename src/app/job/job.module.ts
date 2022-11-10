@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { JobComponent } from './job/job.component';
 import { BrowseJobsComponent } from './browse-jobs/browse-jobs.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
+import { EditJobComponent } from './edit-job/edit-job.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { JobDetailsComponent } from './job-details/job-details.component';
     CreateJobComponent,
     JobComponent,
     BrowseJobsComponent,
-    JobDetailsComponent
+    JobDetailsComponent,
+    EditJobComponent
   ],
   imports: [
     CommonModule,
