@@ -1,13 +1,14 @@
 import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreCollection, QuerySnapshot } from '@angular/fire/compat/firestore';
-import { Observable, of } from 'rxjs';
-import { map, delay, filter, switchMap } from 'rxjs/operators';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentSnapshot, QuerySnapshot } from '@angular/fire/compat/firestore';
+import { Observable, of,EMPTY } from 'rxjs';
+import { map, delay, filter, switchMap, first } from 'rxjs/operators';
 import IUser from '../models/user.model';
 import { Router } from '@angular/router';
 import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import IJob from '../models/job.model';
 import firebase from 'firebase/compat/app'
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class AuthService {
         }
 
         const query = this.usersCollection.ref.where(firebase.firestore.FieldPath.documentId(), '==', user.uid)
-        .where('accountType', '==', 'organization')
+          .where('accountType', '==', 'organization')
 
         return query.get()
       }),
@@ -66,6 +67,25 @@ export class AuthService {
     })
   }
 
+  getUserInfo() {
+    return this.auth.user.pipe(
+      switchMap(user => {
+        if (!user) {
+          return EMPTY
+        }
+
+        return this.usersCollection.doc(user.uid).snapshotChanges().pipe(
+          map(changes => {
+            const data = changes.payload.data() as IUser;
+            const docId = changes.payload.id;
+
+            return { docId, ...data }
+          })
+        )
+      })
+    )
+  }
+
 
   async logout($event: Event) {
     if ($event) {
@@ -77,21 +97,5 @@ export class AuthService {
       await this.router.navigateByUrl('/');
     }
   }
-
-  // isOrganization() {
-  //   return this.auth.user.pipe(
-  //     switchMap(user => {
-  //       if (!user) {
-  //         return of([])
-  //       }
-
-  //       const query = this.usersCollection.ref.where('uid', '==', user.uid)
-  //         .where('accountType', '==', 'organization')
-
-  //       return query.get()
-  //     }),
-  //     map(snapshot => (snapshot as QuerySnapshot<IUser>).docs.length > 0)
-  //   )
-  // }
 }
 

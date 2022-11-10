@@ -1,3 +1,5 @@
+import ICandidate from "./candidate.model";
+
 export default interface IJob {
     uid: string,
     title: string,
@@ -5,6 +7,7 @@ export default interface IJob {
     type: string,
     category: string,
     likes: string[],
-    candidates: string[],
-    docId?: string | null
+    candidates: any,
+    docId?: string | null,
+    isActive: boolean
 }

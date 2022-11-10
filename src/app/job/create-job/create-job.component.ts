@@ -66,7 +66,8 @@ export class CreateJobComponent implements OnInit {
       type: this.type.value,
       category: this.category.value,
       likes: [],
-      candidates: []
+      candidates: [],
+      isActive: true
     }
 
     try {

@@ -3,13 +3,18 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QueryS
 import IJob from '../models/job.model';
 import { map, first } from 'rxjs';
 import IEditJob from '../models/edit.job.model';
+import { AuthService } from './auth.service';
+import ICandidate from '../models/candidate.model';
+import { arrayUnion, arrayRemove, updateDoc } from "firebase/firestore";
+import firebase from 'firebase/compat/app'
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobService {
   public jobsCollection: AngularFirestoreCollection<IJob>
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore,
+    private auth: AuthService) {
     this.jobsCollection = db.collection('jobs')
   }
 
@@ -47,5 +52,23 @@ export class JobService {
 
   deleteJob(id: string) {
     this.jobsCollection.doc(id).delete()
+  }
+
+  applyForJob(id: string) {
+    let candidate: ICandidate = {
+      email: '',
+      uid: '',
+      isАpproved: false
+    }
+
+    this.auth.getUserInfo().subscribe(data => {
+      candidate.email = data.email
+      candidate.uid = data.docId,
+      
+      this.jobsCollection.doc(id).update({
+        candidates: firebase.firestore.FieldValue.arrayUnion(candidate)
+      }
+      )
+    })
   }
 }
