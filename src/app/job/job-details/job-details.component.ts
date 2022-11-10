@@ -13,9 +13,12 @@ import { Router } from '@angular/router';
 export class JobDetailsComponent implements OnInit {
   jobId = ''
   activeJob: IJob | null = null
+  jobLiked: boolean = false
+  likeMsg = 'like'
+  canModfy = false
 
   constructor(private route: ActivatedRoute,
-    private jobService: JobService,
+    public jobService: JobService,
     public auth: AuthService,
     private router: Router) { }
 
@@ -23,18 +26,28 @@ export class JobDetailsComponent implements OnInit {
     this.route.params.pipe(
       switchMap(params => {
         return this.jobService.getJob(params['id'])
+      }),
+      switchMap(jobData => {
+        this.activeJob = jobData
+        this.jobId = jobData.docId ?? ''
+        return this.jobService.canModify(this.jobId)
       })
-    ).subscribe(jobData => {
-      this.activeJob = jobData;
-      console.log(this.activeJob)
-      this.jobId = jobData.docId ?? ''
-    })
+    ).subscribe(result => this.canModfy=result)
   }
 
-  deleteJob($event: Event, jobId: string){
+  deleteJob($event: Event, jobId: string) {
     $event.preventDefault()
     this.jobService.deleteJob(jobId)
     this.router.navigate(['BrowseJobs'])
   }
 
+  applyForJob($event: Event, jobId: string) {
+    $event.preventDefault()
+    this.jobService.applyForJob(jobId)
+  }
+
+  likeJob($event: Event) {
+    $event.preventDefault()
+    this.jobLiked = !this.jobLiked
+  }
 }

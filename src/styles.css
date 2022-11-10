@@ -7,6 +7,25 @@
     font-size: 1.2em;
 }
 
+.likeBtn {
+    background-color: white;
+    padding: 10px 30px 10px 30px;
+    color: #DA0000 !important;
+    font-size: 1.2em;
+    font-weight: 500;
+    border: 2px solid black;
+    text-decoration: none;
+}
+.likeBtn-toggle {
+    background-color: #DA0000;
+    padding: 10px 30px 10px 30px;
+    color: white !important;
+    font-size: 1.2em;
+    font-weight: 500;
+    border: 2px solid black;
+    text-decoration: none;
+}
+
 .text-red {
     color: #da0000;
 }
@@ -66,28 +85,31 @@
 .align-center {
     vertical-align: middle;
 }
-.company-list{
+
+.company-list {
     margin: 20px !important;
     text-align: center;
 
 }
-.companies>*{
+
+.companies>* {
     margin: 0 auto;
 }
 
-.job-details-buttons{
+.job-details-buttons {
     text-align: center;
 }
 
-.job-details-buttons a{
+.job-details-buttons a {
     display: block;
-    margin-bottom:4px;
+    margin-bottom: 4px;
     color: white;
     text-decoration: none;
 }
-.job-details-buttons a:hover{
+
+.job-details-buttons a:hover {
     display: block;
-    margin-bottom:4px;
+    margin-bottom: 4px;
     color: white;
     text-decoration: none;
 }
