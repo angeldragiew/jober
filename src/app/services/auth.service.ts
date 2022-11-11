@@ -1,7 +1,7 @@
 import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentSnapshot, QuerySnapshot } from '@angular/fire/compat/firestore';
-import { Observable, of,EMPTY } from 'rxjs';
+import { Observable, of, EMPTY } from 'rxjs';
 import { map, delay, filter, switchMap, first } from 'rxjs/operators';
 import IUser from '../models/user.model';
 import { Router } from '@angular/router';
@@ -17,6 +17,7 @@ export class AuthService {
   private usersCollection: AngularFirestoreCollection<IUser>
   public isAuthenticated$: Observable<boolean>
   public isOrganization$: Observable<boolean>
+  public user$: Observable<firebase.User | null>
   public redirect = false
 
   constructor(private auth: AngularFireAuth,
@@ -41,6 +42,8 @@ export class AuthService {
       }),
       map(snapshot => (snapshot as QuerySnapshot<IUser>).docs?.length > 0)
     )
+
+    this.user$ = this.auth.user
   }
 
   public async createUser(userData: IUser) {
