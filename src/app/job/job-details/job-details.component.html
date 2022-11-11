@@ -37,10 +37,14 @@
                     <ng-container *ngIf="(auth.isAuthenticated$ | async)">
                         <div *ngIf="!(auth.isOrganization$ | async); else org"
                             class="col-md-2 col-sm-2 job-details-buttons">
-                            <a *ngIf="canApply; else alreadyApplied" href="#" (click)="applyForJob($event, jobId)"
+                            <a *ngIf="canApply && activeJob?.isActive; else alreadyApplied" href="#" (click)="applyForJob($event, jobId)"
                                 class="loginBtn">Apply</a>
                             <ng-template #alreadyApplied>
-                                <p>You have already applied for this job!</p>
+                                <p *ngIf="status != ''" class="company-location" [ngClass]="{
+                                    'status-rejected': status=='Rejected',
+                                    'status-approved': status=='Approved',
+                                    'status-pending': status=='Pending'
+                                }"><b>Your status is:</b> {{status}}</p>
                             </ng-template>
                             <a (click)="likeJob($event, jobId)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
                                     'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a>
