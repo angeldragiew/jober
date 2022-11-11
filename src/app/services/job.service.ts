@@ -5,7 +5,7 @@ import { map, EMPTY, switchMap } from 'rxjs';
 import IEditJob from '../models/edit.job.model';
 import { AuthService } from './auth.service';
 import ICandidate from '../models/candidate.model';
-import { arrayUnion, arrayRemove, updateDoc } from "firebase/firestore";
+import { arrayUnion, arrayRemove, updateDoc, getDoc, doc } from "firebase/firestore";
 import firebase from 'firebase/compat/app'
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
@@ -63,7 +63,7 @@ export class JobService {
       status: 'Pending'
     }
 
-    this.auth.getUserInfo().subscribe(data => {
+    return this.auth.getUserInfo().subscribe(data => {
       candidate.email = data.email
       candidate.uid = data.docId,
 
@@ -74,7 +74,7 @@ export class JobService {
     })
   }
 
-  approveCandidate(jobId: string, candidate: ICandidate) {
+  async approveCandidate(jobId: string, candidate: ICandidate) {
     let approvedCandidate: ICandidate = {
       status: 'Approved',
       email: candidate.email,
@@ -82,16 +82,29 @@ export class JobService {
     }
 
     //ToDo: Make other candidates rejected
+    const docRef = this.jobsCollection.doc(jobId).ref
+    const docSnap = await getDoc(docRef);
+
+    let candidatesArray: ICandidate[] = []
+    if (docSnap.exists()) {
+      candidatesArray = docSnap.data().candidates as Array<ICandidate>
+
+      candidatesArray.forEach(currCandidate => {
+        if (currCandidate.uid == candidate.uid) {
+          currCandidate.status = 'Approved'
+        } else {
+          currCandidate.status = 'Rejected'
+        }
+      });
+    } else {
+      console.log("No such document!");
+      return
+    }
 
     this.jobsCollection.doc(jobId).update({
-      candidates: firebase.firestore.FieldValue.arrayRemove(candidate)
-    }).then(() => {
-      this.jobsCollection.doc(jobId).update({
-        candidates: firebase.firestore.FieldValue.arrayUnion(approvedCandidate),
-        isActive: false
-      })
+      candidates: candidatesArray,
+      isActive: false
     })
-    //TO Ask:
   }
 
   rejectCandidate(jobId: string, candidate: ICandidate) {

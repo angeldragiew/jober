@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JobService } from 'src/app/services/job.service';
 import IJob from 'src/app/models/job.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { switchMap, map } from 'rxjs';
+import { switchMap, map, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import ICandidate from 'src/app/models/candidate.model';
 @Component({
@@ -11,7 +11,7 @@ import ICandidate from 'src/app/models/candidate.model';
   templateUrl: './job-details.component.html',
   styleUrls: ['./job-details.component.css']
 })
-export class JobDetailsComponent implements OnInit {
+export class JobDetailsComponent implements OnInit, OnDestroy {
   jobId = ''
   activeJob: IJob | null = null
   jobLiked: boolean = false
@@ -19,6 +19,8 @@ export class JobDetailsComponent implements OnInit {
   canModify = false
   canApply = false
   candidates: ICandidate[] = []
+  status = ''
+  subscription: Subscription | null = null
 
   constructor(private route: ActivatedRoute,
     public jobService: JobService,
@@ -40,10 +42,12 @@ export class JobDetailsComponent implements OnInit {
     ).subscribe(({ canModify, jobId, jobData, uid }) => {
       this.activeJob = jobData;
       this.canModify = canModify;
-      this.canApply = (jobData.candidates as Array<ICandidate>).filter(c => c.uid == uid).length == 0
+      //Gurmi kato mahna ? na filter
+      this.canApply = (jobData.candidates as Array<ICandidate>)?.filter(c => c.uid == uid).length == 0
+      this.status = (jobData.candidates as Array<ICandidate>)?.find(c => c.uid == uid)?.status ?? ''
       this.jobId = jobId;
-      this.jobLiked = (jobData.likes as Array<string>).filter(l => l == uid).length > 0
-      this.candidates = this.activeJob.candidates as ICandidate[]
+      this.jobLiked = (jobData.likes as Array<string>)?.filter(l => l == uid).length > 0
+      this.candidates = jobData.candidates as ICandidate[]
     })
 
     // this.route.params.pipe(
@@ -70,13 +74,19 @@ export class JobDetailsComponent implements OnInit {
 
   applyForJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.jobService.applyForJob(jobId)
+    this.subscription = this.jobService.applyForJob(jobId)
+    console.log('Method was called');
+
   }
 
-  approveCandidate($event: Event, jobId: string, candidate: ICandidate) {
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe()
+  }
+
+  async approveCandidate($event: Event, jobId: string, candidate: ICandidate) {
     $event.preventDefault()
 
-    this.jobService.approveCandidate(jobId, candidate)
+    await this.jobService.approveCandidate(jobId, candidate)
   }
 
   rejectCandidate($event: Event, jobId: string, candidate: ICandidate) {
