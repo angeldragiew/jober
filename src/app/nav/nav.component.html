@@ -25,10 +25,17 @@
                 <ng-template #authLinks>
                     <li><a routerLink="/BrowseJobs" routerLinkActive="active-nav-link"
                             [routerLinkActiveOptions]="{exact: true}">Companies</a></li>
+                    <li *ngIf="(auth.isOrganization$ | async)"><a routerLink="/Create/Job"
+                            routerLinkActive="active-nav-link" [routerLinkActiveOptions]="{exact: true}">Create Job</a>
+                    </li>
+                    <li *ngIf="(auth.isOrganization$ | async)"><a routerLink="/MyCreatedJobs"
+                            routerLinkActive="active-nav-link" [routerLinkActiveOptions]="{exact: true}">My Jobs</a>
+                    </li>
+                    <li *ngIf="!(auth.isOrganization$ | async)"><a routerLink="/MyAppliedJobs"
+                        routerLinkActive="active-nav-link" [routerLinkActiveOptions]="{exact: true}">My Jobs</a>
+                </li>
                     <li><a href="#" (click)="auth.logout($event)">Logout</a></li>
                 </ng-template>
-                <li *ngIf="(auth.isOrganization$ | async)"><a routerLink="/Create/Job" routerLinkActive="active-nav-link"
-                    [routerLinkActiveOptions]="{exact: true}">Create Job</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div>
