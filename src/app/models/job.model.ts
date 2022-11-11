@@ -7,7 +7,8 @@ export default interface IJob {
     type: string,
     category: string,
     likes: string[],
-    candidates: any,
+    candidates: any | ICandidate[],
     docId?: string | null,
-    isActive: boolean
+    isActive: boolean,
+    status?: string
 }
