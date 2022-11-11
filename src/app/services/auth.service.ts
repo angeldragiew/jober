@@ -18,7 +18,6 @@ export class AuthService {
   public isAuthenticated$: Observable<boolean>
   public isOrganization$: Observable<boolean>
   public user$: Observable<firebase.User | null>
-  public redirect = false
 
   constructor(private auth: AngularFireAuth,
     private db: AngularFirestore,
@@ -96,9 +95,7 @@ export class AuthService {
     }
 
     await this.auth.signOut()
-    if (this.redirect) {
-      await this.router.navigateByUrl('/');
-    }
+    await this.router.navigateByUrl('/');
   }
 }
 

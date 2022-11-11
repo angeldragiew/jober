@@ -61,6 +61,6 @@ export class RegisterComponent implements OnInit {
       this.router.navigate([
         '/'
       ])
-    }, 2000)
+    }, 1000)
   }
 }
