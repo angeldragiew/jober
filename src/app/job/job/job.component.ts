@@ -11,6 +11,7 @@ export class JobComponent implements OnInit {
   @Input() category = ''
   @Input() type = ''
   @Input() link = ''
+  @Input() status? = ''
 
   constructor() { }
 
