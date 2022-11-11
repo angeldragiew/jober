@@ -28,7 +28,8 @@ export class AppliedJobsComponent implements OnInit {
         return this.jobService.getAllJobs().pipe(map(jobs => ({ jobs, userId })))
       })
     ).subscribe(({ jobs, userId }) => {
-      this.jobs = jobs.filter(j => (j.candidates as Array<ICandidate>).filter(c => c.uid == userId).length > 0).map(j=> {
+      //Kato premahna ? ot vtoriq filter gurmi
+      this.jobs = jobs.filter(j => (j.candidates as Array<ICandidate>)?.filter(c => c.uid == userId).length > 0).map(j=> {
         return {
           ...j,
           status: (j.candidates as Array<ICandidate>).find(c=>c.uid==userId)?.status
