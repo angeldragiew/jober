@@ -15,7 +15,7 @@ export class JobDetailsComponent implements OnInit {
   jobId = ''
   activeJob: IJob | null = null
   jobLiked: boolean = false
-  likeMsg = 'like'
+  likeMsg = this.jobLiked ? 'Liked' : 'Like'
   canModify = false
   canApply = false
   candidates: ICandidate[] = []
@@ -42,6 +42,7 @@ export class JobDetailsComponent implements OnInit {
       this.canModify = canModify;
       this.canApply = (jobData.candidates as Array<ICandidate>).filter(c => c.uid == uid).length == 0
       this.jobId = jobId;
+      this.jobLiked = (jobData.likes as Array<string>).filter(l => l == uid).length > 0
       this.candidates = this.activeJob.candidates as ICandidate[]
     })
 
@@ -84,8 +85,12 @@ export class JobDetailsComponent implements OnInit {
     this.jobService.rejectCandidate(jobId, candidate)
   }
 
-  likeJob($event: Event) {
+  likeJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.jobLiked = !this.jobLiked
+    if (this.jobLiked) {
+      this.jobService.dislikeJob(jobId)
+    } else {
+      this.jobService.likeJob(jobId)
+    }
   }
 }

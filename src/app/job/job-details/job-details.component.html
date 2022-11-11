@@ -35,10 +35,14 @@
                     </div>
 
                     <ng-container *ngIf="(auth.isAuthenticated$ | async)">
-                        <div *ngIf="!(auth.isOrganization$ | async) && canApply; else org"
+                        <div *ngIf="!(auth.isOrganization$ | async); else org"
                             class="col-md-2 col-sm-2 job-details-buttons">
-                            <a href="#" (click)="applyForJob($event, jobId)" class="loginBtn">Apply</a>
-                            <a (click)="likeJob($event)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
+                            <a *ngIf="canApply; else alreadyApplied" href="#" (click)="applyForJob($event, jobId)"
+                                class="loginBtn">Apply</a>
+                            <ng-template #alreadyApplied>
+                                <p>You have already applied for this job!</p>
+                            </ng-template>
+                            <a (click)="likeJob($event, jobId)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
                                     'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a>
                         </div>
                         <ng-template #org>

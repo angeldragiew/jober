@@ -123,4 +123,25 @@ export class JobService {
       }),
       map(snapshot => (snapshot as QuerySnapshot<IJob>).docs?.length > 0))
   }
+
+  likeJob(jobId: string) {
+    this.auth.user$.subscribe(user => {
+      if (!user) {
+        return EMPTY
+      }
+
+      return this.jobsCollection.doc(jobId).update({ likes: firebase.firestore.FieldValue.arrayUnion(user.uid) })
+    })
+  }
+
+  dislikeJob(jobId: string) {
+    this.auth.user$.subscribe(user => {
+      if (!user) {
+        return EMPTY
+      }
+
+      return this.jobsCollection.doc(jobId).update({ likes: firebase.firestore.FieldValue.arrayRemove(user.uid) })
+    })
+  }
+  //TODO: Type of the likes in job model --> should it be any
 }
