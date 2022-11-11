@@ -33,20 +33,49 @@
                             </div>
                         </div>
                     </div>
+
                     <ng-container *ngIf="(auth.isAuthenticated$ | async)">
-                        <div *ngIf="canModfy &&(auth.isOrganization$ | async)"
+                        <div *ngIf="!(auth.isOrganization$ | async) && canApply; else org"
                             class="col-md-2 col-sm-2 job-details-buttons">
-                            <a routerLink="/EditJob/{{jobId}}" class="loginBtn">Edit</a>
-                            <a href="#" (click)="deleteJob($event, jobId)" class="loginBtn">Delete</a>
-                        </div>
-                        <div *ngIf="!(auth.isOrganization$ | async)" class="col-md-2 col-sm-2 job-details-buttons">
                             <a href="#" (click)="applyForJob($event, jobId)" class="loginBtn">Apply</a>
                             <a (click)="likeJob($event)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
-                                'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a>
+                                    'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a>
                         </div>
+                        <ng-template #org>
+                            <div *ngIf="canModify" class="col-md-2 col-sm-2 job-details-buttons">
+                                <a routerLink="/EditJob/{{jobId}}" class="loginBtn">Edit</a>
+                                <a href="#" (click)="deleteJob($event, jobId)" class="loginBtn">Delete</a>
+                            </div>
+                        </ng-template>
                     </ng-container>
-                </div>
 
+                    <div *ngIf="canModify" class="col-md-12 col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-user fa-fw"></i> Candidates
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div *ngIf="candidates.length<=0; else candidatesList" class="panel-body">
+                                <p>Nobody has applied for the job yet.</p>
+                            </div>
+                            <ng-template #candidatesList>
+                                <div class="panel-body">
+                                    <p *ngFor="let candidate of candidates">{{candidate.email}}
+                                        <span *ngIf="candidate.status=='Pending'; else status"><a
+                                                (click)="approveCandidate($event, jobId, candidate)" href="#"
+                                                class="approveBtn">Approve</a><a
+                                                (click)="rejectCandidate($event, jobId, candidate)" href="#"
+                                                class="approveBtn">Reject</a> </span>
+                                        <ng-template #status><span [ngClass]="{
+                                            'status-rejected': candidate.status=='Rejected',
+                                            'status-approved': candidate.status=='Approved'
+                                        }">{{candidate.status}}</span></ng-template>
+                                    </p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

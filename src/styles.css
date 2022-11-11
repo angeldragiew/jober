@@ -16,6 +16,7 @@
     border: 2px solid black;
     text-decoration: none;
 }
+
 .likeBtn-toggle {
     background-color: #DA0000;
     padding: 10px 30px 10px 30px;
@@ -112,4 +113,48 @@
     margin-bottom: 4px;
     color: white;
     text-decoration: none;
+}
+
+.approveBtn {
+    background-color: #DA0000;
+    padding: 10px 30px 10px 30px;
+    border: none;
+    color: azure;
+    font-size: 1em;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.approveBtn:hover {
+    background-color: #DA0000;
+    padding: 10px 30px 10px 30px;
+    border: none;
+    color: azure;
+    font-size: 1em;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.approveBtn a {
+    text-decoration: none;
+}
+
+.approveBtn a:hover {
+    text-decoration: none;
+    color: azure;
+}
+
+.status-approved{
+    background-color: greenyellow;
+    padding: 10px
+}
+
+.status-rejected{
+    background-color: red;
+    padding: 10px
+}
+
+.status-pending{
+    background-color: skyblue;
+    padding: 10px
 }

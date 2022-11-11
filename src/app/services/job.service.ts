@@ -60,7 +60,7 @@ export class JobService {
     let candidate: ICandidate = {
       email: '',
       uid: '',
-      isАpproved: false
+      status: 'Pending'
     }
 
     this.auth.getUserInfo().subscribe(data => {
@@ -71,6 +71,42 @@ export class JobService {
           candidates: firebase.firestore.FieldValue.arrayUnion(candidate)
         }
         )
+    })
+  }
+
+  approveCandidate(jobId: string, candidate: ICandidate) {
+    let approvedCandidate: ICandidate = {
+      status: 'Approved',
+      email: candidate.email,
+      uid: candidate.uid
+    }
+
+    //ToDo: Make other candidates rejected
+
+    this.jobsCollection.doc(jobId).update({
+      candidates: firebase.firestore.FieldValue.arrayRemove(candidate)
+    }).then(() => {
+      this.jobsCollection.doc(jobId).update({
+        candidates: firebase.firestore.FieldValue.arrayUnion(approvedCandidate),
+        isActive: false
+      })
+    })
+    //TO Ask:
+  }
+
+  rejectCandidate(jobId: string, candidate: ICandidate) {
+    let rejectedCandidate: ICandidate = {
+      status: 'Rejected',
+      email: candidate.email,
+      uid: candidate.uid
+    }
+
+    this.jobsCollection.doc(jobId).update({
+      candidates: firebase.firestore.FieldValue.arrayRemove(candidate)
+    }).then(() => {
+      this.jobsCollection.doc(jobId).update({
+        candidates: firebase.firestore.FieldValue.arrayUnion(rejectedCandidate),
+      })
     })
   }
 
