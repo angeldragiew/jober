@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <ng-container *ngIf="(auth.isAuthenticated$ | async)">
+                    <!-- <ng-container *ngIf="(auth.isAuthenticated$ | async)"> -->
                         <div *ngIf="!(auth.isOrganization$ | async); else org"
                             class="col-md-2 col-sm-2 job-details-buttons">
                             <a *ngIf="canApply && activeJob?.isActive; else alreadyApplied" href="#" (click)="applyForJob($event, jobId)"
@@ -45,6 +45,7 @@
                                     'status-approved': status=='Approved',
                                     'status-pending': status=='Pending'
                                 }"><b>Your status is:</b> {{status}}</p>
+                                <p *ngIf="status == ''">The job is not active.</p>
                             </ng-template>
                             <a (click)="likeJob($event, jobId)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
                                     'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a>
@@ -55,7 +56,7 @@
                                 <a href="#" (click)="deleteJob($event, jobId)" class="loginBtn">Delete</a>
                             </div>
                         </ng-template>
-                    </ng-container>
+                    <!-- </ng-container> -->
 
                     <div *ngIf="canModify" class="col-md-12 col-sm-12">
                         <div class="panel panel-default">
