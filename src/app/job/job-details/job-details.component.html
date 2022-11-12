@@ -67,7 +67,7 @@
                                 <i class="fa fa-user fa-fw"></i> Candidates
                             </div>
                             <!-- /.panel-heading -->
-                            <div *ngIf="candidates.length<=0; else candidatesList" class="panel-body">
+                            <div *ngIf="candidates ? candidates.length<=0 : true; else candidatesList" class="panel-body">
                                 <p>Nobody has applied for the job yet.</p>
                             </div>
                             <ng-template #candidatesList>
