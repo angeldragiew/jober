@@ -20,7 +20,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   canApply = false
   candidates: ICandidate[] = []
   status = ''
-  subscription: Subscription | null = null
+  applyJobSubscription: Subscription | null = null
+  likeJobSubscription: Subscription | null = null
+  dislikeJobSubscription: Subscription | null = null
 
   constructor(private route: ActivatedRoute,
     public jobService: JobService,
@@ -66,6 +68,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     // })
   }
 
+  ngOnDestroy(): void {
+    this.applyJobSubscription?.unsubscribe()
+    this.likeJobSubscription?.unsubscribe()
+    this.dislikeJobSubscription?.unsubscribe()
+  }
+
+
   deleteJob($event: Event, jobId: string) {
     $event.preventDefault()
     this.jobService.deleteJob(jobId)
@@ -74,15 +83,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   applyForJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.subscription = this.jobService.applyForJob(jobId)
+    this.applyJobSubscription = this.jobService.applyForJob(jobId)
     console.log('Method was called');
 
   }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe()
-  }
-
   async approveCandidate($event: Event, jobId: string, candidate: ICandidate) {
     $event.preventDefault()
 
@@ -95,12 +99,12 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     this.jobService.rejectCandidate(jobId, candidate)
   }
 
-  likeJob($event: Event, jobId: string) {
+   likeJob($event: Event, jobId: string) {
     $event.preventDefault()
     if (this.jobLiked) {
-      this.jobService.dislikeJob(jobId)
+      this.dislikeJobSubscription = this.jobService.dislikeJob(jobId)
     } else {
-      this.jobService.likeJob(jobId)
+      this.likeJobSubscription = this.jobService.likeJob(jobId)
     }
   }
 }

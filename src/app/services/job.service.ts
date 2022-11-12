@@ -75,12 +75,6 @@ export class JobService {
   }
 
   async approveCandidate(jobId: string, candidate: ICandidate) {
-    let approvedCandidate: ICandidate = {
-      status: 'Approved',
-      email: candidate.email,
-      uid: candidate.uid
-    }
-
     //ToDo: Make other candidates rejected
     const docRef = this.jobsCollection.doc(jobId).ref
     const docSnap = await getDoc(docRef);
@@ -138,7 +132,7 @@ export class JobService {
   }
 
   likeJob(jobId: string) {
-    this.auth.user$.subscribe(user => {
+    return this.auth.user$.subscribe(user => {
       if (!user) {
         return EMPTY
       }
@@ -148,7 +142,7 @@ export class JobService {
   }
 
   dislikeJob(jobId: string) {
-    this.auth.user$.subscribe(user => {
+    return this.auth.user$.subscribe(user => {
       if (!user) {
         return EMPTY
       }
