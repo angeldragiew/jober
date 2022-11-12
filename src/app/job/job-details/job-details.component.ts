@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { switchMap, map, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import ICandidate from 'src/app/models/candidate.model';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-job-details',
   templateUrl: './job-details.component.html',
@@ -26,7 +28,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     public jobService: JobService,
     public auth: AuthService,
-    private router: Router) { }
+    private router: Router,
+    private toastr: ToastrService) { }
 
   //Is Everything updated on change
   ngOnInit(): void {
@@ -62,8 +65,15 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   deleteJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.subscriptions.add(this.jobService.deleteJob(jobId).subscribe())
-    this.router.navigate(['MyCreatedJobs'])
+    this.subscriptions.add(this.jobService.deleteJob(jobId).subscribe({
+      next: (data) => {
+        this.router.navigate(['MyCreatedJobs'])
+        this.toastr.success('Job has been deleted successfully!')
+      },
+      error: (error)=>{
+        this.toastr.error('Something happened! Could not delete the job.')
+      }
+    }))
   }
 
   applyForJob($event: Event, jobId: string) {
@@ -86,8 +96,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     $event.preventDefault()
     if (this.jobLiked) {
       this.subscriptions.add(this.jobService.dislikeJob(jobId).subscribe())
-    } else {
-      this.subscriptions.add(this.jobService.likeJob(jobId).subscribe())
-    }
+  } else {
+  this.subscriptions.add(this.jobService.likeJob(jobId).subscribe())
+}
   }
 }

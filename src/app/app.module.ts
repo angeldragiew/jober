@@ -10,6 +10,7 @@ import {AngularFireAuthModule} from '@angular/fire/compat/auth';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     UserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    ToastNoAnimationModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
