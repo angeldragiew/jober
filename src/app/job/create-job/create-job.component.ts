@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { JobService } from 'src/app/services/job.service';
 import IJob from 'src/app/models/job.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app'
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-job',
   templateUrl: './create-job.component.html',
   styleUrls: ['./create-job.component.css']
 })
-export class CreateJobComponent implements OnInit {
+export class CreateJobComponent implements OnInit, OnDestroy {
   showAlert = false;
   alertMsg = 'Please wait! Video is uploading!';
   alertColor = 'blue';
   inSubmission = false;
+  private subscriptions: Subscription = new Subscription()
 
   user: firebase.User | null = null
 
@@ -23,10 +25,14 @@ export class CreateJobComponent implements OnInit {
   constructor(private jobService: JobService,
     private auth: AngularFireAuth,
     private router: Router) {
-    auth.user.subscribe(user => this.user = user)
+    this.subscriptions.add(auth.user.subscribe(user => this.user = user))
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe()
   }
 
   title = new FormControl('', {
@@ -53,7 +59,7 @@ export class CreateJobComponent implements OnInit {
     category: this.category
   })
 
-  async createJob() {
+  createJob() {
     this.showAlert = true;
     this.alertMsg = 'Please wait! Video is uploading!';
     this.alertColor = 'blue';
@@ -70,22 +76,24 @@ export class CreateJobComponent implements OnInit {
       isActive: true
     }
 
-    try {
-      await this.jobService.createJob(job);
-    } catch (e) {
-      this.showAlert = true;
-      this.alertMsg = 'Something went wrong. Try again!';
-      this.alertColor = 'red';
-      this.inSubmission = false;
-    }
+    this.subscriptions.add(this.jobService.createJob(job).subscribe({
+      next: (data) => {
+        this.showAlert = true;
+        this.alertMsg = 'Job was created successfully!';
+        this.alertColor = 'green';
+        this.inSubmission = true;
 
-    this.showAlert = true;
-    this.alertMsg = 'Job was created successfully!';
-    this.alertColor = 'green';
-    this.inSubmission = true;
+        setTimeout(() => {
+          this.router.navigateByUrl('/MyCreatedJobs')
+        }, 1500);
+      },
+      error: (error) => {
+        this.showAlert = true;
+        this.alertMsg = 'Something went wrong. Try again!';
+        this.alertColor = 'red';
+        this.inSubmission = false;
+      }
+    }))
 
-    setTimeout(() => {
-      this.router.navigateByUrl('/MyCreatedJobs')
-    }, 1500);
   }
 }

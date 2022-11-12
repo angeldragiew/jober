@@ -62,13 +62,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   deleteJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.jobService.deleteJob(jobId)
+    this.subscriptions.add(this.jobService.deleteJob(jobId).subscribe())
     this.router.navigate(['MyCreatedJobs'])
   }
 
   applyForJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.subscriptions.add(this.jobService.applyForJob(jobId).subscribe(console.log))
+    this.subscriptions.add(this.jobService.applyForJob(jobId).subscribe())
   }
   async approveCandidate($event: Event, jobId: string, candidate: ICandidate) {
     $event.preventDefault()

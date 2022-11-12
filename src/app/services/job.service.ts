@@ -21,7 +21,7 @@ export class JobService {
   }
 
   createJob(data: IJob) {
-    return this.jobsCollection.add(data)
+    return from(this.jobsCollection.add(data))
   }
 
   getAllJobs() {
@@ -47,13 +47,13 @@ export class JobService {
   }
 
   updateJob(id: string, data: IEditJob) {
-    return this.jobsCollection.doc(id).update({
+    return from(this.jobsCollection.doc(id).update({
       ...data
-    })
+    }))
   }
 
   deleteJob(id: string) {
-    this.jobsCollection.doc(id).delete()
+    return from(this.jobsCollection.doc(id).delete())
   }
 
   applyForJob(id: string) {
@@ -92,10 +92,10 @@ export class JobService {
       });
     } else {
       console.log("No such document!");
-      return
+      return EMPTY
     }
 
-    this.jobsCollection.doc(jobId).update({
+    return this.jobsCollection.doc(jobId).update({
       candidates: candidatesArray,
       isActive: false
     })
