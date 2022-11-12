@@ -35,27 +35,30 @@
                     </div>
 
                     <!-- <ng-container *ngIf="(auth.isAuthenticated$ | async)"> -->
-                        <div *ngIf="!(auth.isOrganization$ | async); else org"
-                            class="col-md-2 col-sm-2 job-details-buttons">
-                            <a *ngIf="canApply && activeJob?.isActive; else alreadyApplied" href="#" (click)="applyForJob($event, jobId)"
-                                class="loginBtn">Apply</a>
-                            <ng-template #alreadyApplied>
-                                <p *ngIf="status != ''" class="company-location" [ngClass]="{
+                    <div *ngIf="!(auth.isOrganization$ | async); else org"
+                        class="col-md-2 col-sm-2 job-details-buttons">
+                        <a *ngIf="canApply && activeJob?.isActive; else alreadyApplied" href="#"
+                            (click)="applyForJob($event, jobId)" class="loginBtn">Apply</a>
+                        <ng-template #alreadyApplied>
+                            <p *ngIf="status != ''" class="company-location" [ngClass]="{
                                     'status-rejected': status=='Rejected',
                                     'status-approved': status=='Approved',
                                     'status-pending': status=='Pending'
                                 }"><b>Your status is:</b> {{status}}</p>
-                                <p *ngIf="status == ''">The job is not active.</p>
-                            </ng-template>
-                            <a (click)="likeJob($event, jobId)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
-                                    'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a>
-                        </div>
-                        <ng-template #org>
-                            <div *ngIf="canModify" class="col-md-2 col-sm-2 job-details-buttons">
-                                <a routerLink="/EditJob/{{jobId}}" class="loginBtn">Edit</a>
-                                <a href="#" (click)="deleteJob($event, jobId)" class="loginBtn">Delete</a>
-                            </div>
+                            <p *ngIf="status == ''">The job is not active.</p>
                         </ng-template>
+                        <div class="likesDiv">
+                            <span><a (click)="likeJob($event, jobId)" href="#" [ngClass]="{'likeBtn-toggle': jobLiked,
+                                'likeBtn':!jobLiked}" class="likeBtn">{{likeMsg}}</a></span>
+                            <span class="jobLikesCount">{{likes}}</span>
+                        </div>
+                    </div>
+                    <ng-template #org>
+                        <div *ngIf="canModify" class="col-md-2 col-sm-2 job-details-buttons">
+                            <a routerLink="/EditJob/{{jobId}}" class="loginBtn">Edit</a>
+                            <a href="#" (click)="deleteJob($event, jobId)" class="loginBtn">Delete</a>
+                        </div>
+                    </ng-template>
                     <!-- </ng-container> -->
 
                     <div *ngIf="canModify" class="col-md-12 col-sm-12">

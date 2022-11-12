@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore';
 import IJob from '../models/job.model';
-import { map, EMPTY, switchMap } from 'rxjs';
+import { map, EMPTY, switchMap, from } from 'rxjs';
 import IEditJob from '../models/edit.job.model';
 import { AuthService } from './auth.service';
 import ICandidate from '../models/candidate.model';
@@ -63,19 +63,19 @@ export class JobService {
       status: 'Pending'
     }
 
-    return this.auth.getUserInfo().subscribe(data => {
-      candidate.email = data.email
-      candidate.uid = data.docId,
+    return this.auth.getUserInfo().pipe(
+      switchMap(data => {
+        candidate.email = data.email
+        candidate.uid = data.docId
 
-        this.jobsCollection.doc(id).update({
+        return from(this.jobsCollection.doc(id).update({
           candidates: firebase.firestore.FieldValue.arrayUnion(candidate)
-        }
-        )
-    })
+        }))
+
+      }))
   }
 
   async approveCandidate(jobId: string, candidate: ICandidate) {
-    //ToDo: Make other candidates rejected
     const docRef = this.jobsCollection.doc(jobId).ref
     const docSnap = await getDoc(docRef);
 
@@ -109,7 +109,7 @@ export class JobService {
     }
 
     this.jobsCollection.doc(jobId).update({
-      candidates: firebase.firestore.FieldValue.arrayRemove(candidate)
+      candidates: firebase.firestore.FieldValue.arrayRemove(candidate),
     }).then(() => {
       this.jobsCollection.doc(jobId).update({
         candidates: firebase.firestore.FieldValue.arrayUnion(rejectedCandidate),
@@ -132,23 +132,25 @@ export class JobService {
   }
 
   likeJob(jobId: string) {
-    return this.auth.user$.subscribe(user => {
-      if (!user) {
-        return EMPTY
-      }
+    return this.auth.user$.pipe(
+      switchMap(user => {
+        if (!user) {
+          return EMPTY
+        }
 
-      return this.jobsCollection.doc(jobId).update({ likes: firebase.firestore.FieldValue.arrayUnion(user.uid) })
-    })
+        return from(this.jobsCollection.doc(jobId).update({ likes: firebase.firestore.FieldValue.arrayUnion(user.uid) }))
+      }))
   }
 
   dislikeJob(jobId: string) {
-    return this.auth.user$.subscribe(user => {
-      if (!user) {
-        return EMPTY
-      }
+    return this.auth.user$.pipe(
+      switchMap(user => {
+        if (!user) {
+          return EMPTY
+        }
 
-      return this.jobsCollection.doc(jobId).update({ likes: firebase.firestore.FieldValue.arrayRemove(user.uid) })
-    })
+        return from(this.jobsCollection.doc(jobId).update({ likes: firebase.firestore.FieldValue.arrayRemove(user.uid) }))
+      }))
   }
   //TODO: Type of the likes in job model --> should it be any
 }

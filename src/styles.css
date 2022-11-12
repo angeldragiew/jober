@@ -15,8 +15,8 @@
     font-weight: 500;
     border: 2px solid black;
     text-decoration: none;
+    width: 100%;
 }
-
 .likeBtn-toggle {
     background-color: #DA0000;
     padding: 10px 30px 10px 30px;
@@ -25,6 +25,7 @@
     font-weight: 500;
     border: 2px solid black;
     text-decoration: none;
+    width: 100%;
 }
 
 .text-red {
@@ -144,17 +145,39 @@
     color: azure;
 }
 
-.status-approved{
+.status-approved {
     background-color: greenyellow;
     padding: 10px
 }
 
-.status-rejected{
+.status-rejected {
     background-color: red;
     padding: 10px
 }
 
-.status-pending{
+.status-pending {
     background-color: skyblue;
     padding: 10px
+}
+
+.no-jobs {
+    /* margin-left: 42%; */
+    background-color: #da0000;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    width: 30%;
+    padding: 10px;
+}
+
+.likesDiv>* {
+    display: inline-block;
+}
+
+.jobLikesCount {
+    margin-left: 10px;
+    background-color: #DA0000;
+    padding:13px;
+    font-size: 1.2em;
+    color: white;
 }

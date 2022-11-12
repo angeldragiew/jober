@@ -14,7 +14,9 @@
             <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p> -->
         </div>
         <div class="companies">
-            <app-job *ngFor="let job of jobs" link="/JobDetails/{{job.docId}}" [status]="job.status" [category]="job.category" [type]="job.type" [title]="job.title"></app-job>
+            <p class="no-jobs" *ngIf="jobs.length<=0">No jobs yet</p>
+            <app-job *ngFor="let job of jobs" link="/JobDetails/{{job.docId}}" [status]="job.status"
+                [category]="job.category" [type]="job.type" [title]="job.title"></app-job>
         </div>
     </div>
 </section>

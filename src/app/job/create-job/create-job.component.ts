@@ -85,7 +85,7 @@ export class CreateJobComponent implements OnInit {
     this.inSubmission = true;
 
     setTimeout(() => {
-      this.router.navigateByUrl('/')
+      this.router.navigateByUrl('/MyCreatedJobs')
     }, 1500);
   }
 }
