@@ -70,7 +70,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         this.router.navigate(['MyCreatedJobs'])
         this.toastr.success('Job has been deleted successfully!')
       },
-      error: (error)=>{
+      error: (error) => {
         this.toastr.error('Something happened! Could not delete the job.')
       }
     }))
@@ -82,22 +82,33 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
   async approveCandidate($event: Event, jobId: string, candidate: ICandidate) {
     $event.preventDefault()
-
-    await this.jobService.approveCandidate(jobId, candidate)
+    try {
+      await this.jobService.approveCandidate(jobId, candidate)
+      this.toastr.success('Candidate approved.')
+    } catch (e) {
+      this.toastr.error('Could not approve candidate.')
+    }
   }
 
   rejectCandidate($event: Event, jobId: string, candidate: ICandidate) {
     $event.preventDefault()
 
-    this.jobService.rejectCandidate(jobId, candidate)
+    this.subscriptions.add(this.jobService.rejectCandidate(jobId, candidate).subscribe({
+      next: (data) => {
+        this.toastr.success('Candidate rejected.')
+      },
+      error: (data) => {
+        this.toastr.error('Could not reject candidate.')
+      }
+    }))
   }
 
   likeJob($event: Event, jobId: string) {
     $event.preventDefault()
     if (this.jobLiked) {
       this.subscriptions.add(this.jobService.dislikeJob(jobId).subscribe())
-  } else {
-  this.subscriptions.add(this.jobService.likeJob(jobId).subscribe())
-}
+    } else {
+      this.subscriptions.add(this.jobService.likeJob(jobId).subscribe())
+    }
   }
 }

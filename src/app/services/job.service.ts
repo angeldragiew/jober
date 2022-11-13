@@ -108,13 +108,13 @@ export class JobService {
       uid: candidate.uid
     }
 
-    this.jobsCollection.doc(jobId).update({
+    return from(this.jobsCollection.doc(jobId).update({
       candidates: firebase.firestore.FieldValue.arrayRemove(candidate),
     }).then(() => {
       this.jobsCollection.doc(jobId).update({
         candidates: firebase.firestore.FieldValue.arrayUnion(rejectedCandidate),
       })
-    })
+    }))
   }
 
   canModify(jobId: string) {
