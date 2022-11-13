@@ -78,8 +78,16 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   applyForJob($event: Event, jobId: string) {
     $event.preventDefault()
-    this.subscriptions.add(this.jobService.applyForJob(jobId).subscribe())
+    this.subscriptions.add(this.jobService.applyForJob(jobId).subscribe({
+      next: (data) => {
+        this.toastr.success('You successfully applied for the job!')
+      },
+      error: (error) => {
+        this.toastr.error('Something happened. Please try again later!')
+      }
+    }))
   }
+  
   async approveCandidate($event: Event, jobId: string, candidate: ICandidate) {
     $event.preventDefault()
     try {
