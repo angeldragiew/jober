@@ -4,7 +4,7 @@
         <div class="caption">
             <h2>Build Your Career</h2>
 
-            <a routerLink="jobs" class="browse-link">Browse jobs</a>
+            <a *ngIf="auth.isAuthenticated$ | async" routerLink="/BrowseJobs" class="browse-link">Browse jobs</a>
         </div>
     </div>
 </section>

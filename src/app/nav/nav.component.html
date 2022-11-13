@@ -32,8 +32,10 @@
                             routerLinkActive="active-nav-link" [routerLinkActiveOptions]="{exact: true}">My Jobs</a>
                     </li>
                     <li *ngIf="!(auth.isOrganization$ | async)"><a routerLink="/MyAppliedJobs"
-                        routerLinkActive="active-nav-link" [routerLinkActiveOptions]="{exact: true}">My Jobs</a>
-                </li>
+                            routerLinkActive="active-nav-link" [routerLinkActiveOptions]="{exact: true}">My Jobs</a>
+                    </li>
+                    <li><a routerLink="/myprofile" routerLinkActive="active-nav-link"
+                            [routerLinkActiveOptions]="{exact: true}">My Profile</a></li>
                     <li><a href="#" (click)="auth.logout($event)">Logout</a></li>
                 </ng-template>
             </ul>
